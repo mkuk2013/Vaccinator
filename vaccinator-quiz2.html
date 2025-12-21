@@ -8,11 +8,16 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas for better text rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root {
             /* Modern Color Palette */
@@ -189,6 +194,48 @@
 
         .opacity-100 {
             opacity: 1;
+        }
+
+        /* Urdu Text Support */
+        .urdu-text,
+        .question-text[data-lang="urdu"],
+        .option-text[data-lang="urdu"] {
+            font-family: 'Noto Nastaliq Urdu', serif !important;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .question-text {
+            font-family: 'Poppins', sans-serif;
+            transition: font-family 0.3s ease;
+        }
+
+        .option-text {
+            font-family: 'Poppins', sans-serif;
+            transition: font-family 0.3s ease;
+        }
+
+        /* Auto-detect Urdu text and apply font */
+        .auto-urdu {
+            font-family: 'Noto Nastaliq Urdu', serif !important;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        /* Mixed language support */
+        .mixed-lang {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .mixed-lang .urdu-part {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            direction: rtl;
+            display: inline-block;
+            text-align: right;
         }
 
         /* Glassmorphism Effect */
@@ -1640,6 +1687,17 @@
                 background: white !important;
                 color: black !important;
             }
+
+            /* Ensure content fits on pages and avoids cutting off */
+            .result-card {
+                padding: 0.5in; /* Adjust padding for print */
+                page-break-after: always; /* Force a page break after the result summary */
+            }
+
+            .review-item {
+                page-break-inside: avoid; /* Avoid breaking individual review items across pages */
+                margin-bottom: 0.25in !important; /* Adjust margin for print */
+            }
         }
 
         /* Custom Scrollbar */
@@ -1837,7 +1895,7 @@
         <section id="resultSection" class="section">
             <div class="result-section">
                 <div class="container">
-                    <div class="result-card animate-scaleIn">
+                    <div class="result-card animate-scaleIn" id="result-card">
                         <div class="result-header">
                             <h2 class="result-title">Test Completed!</h2>
                             <p class="welcome-subtitle">Here's your detailed performance analysis</p>
@@ -2612,7 +2670,7 @@
         options: ["DPT", "Measles", "Malaria", "OPV"],
         correct: 2,
         difficulty: "easy",
-        explanation: "Malaria EPI کے پروگرام میں شامل نہیں ہے۔"
+        explanation: "Malaria EPI کے پروگرام میں شامل نہیں ہے।"
     },
     {
         question: "Which of the following is a viral disease?",
@@ -2633,7 +2691,7 @@
         options: ["Hepatitis B", "DPT", "BCG", "OPV"],
         correct: 0,
         difficulty: "medium",
-        explanation: "Hepatitis B کی ویکسین جگر کے کینسر کی روک تھام میں مددگار ہے۔"
+        explanation: "Hepatitis B کی ویکسین جگر کے کینسر کی روک تھام میں मददگار ہے۔"
     },
     {
         question: "ویکسین بچوں کو کس وجہ سے دی جاتی ہے؟",
@@ -2647,7 +2705,7 @@
         options: ["Pertussis", "Measles", "Polio", "Tetanus"],
         correct: 0,
         difficulty: "medium",
-        explanation: "Pertussis کو کالی کھانسی یا 'Black cough' بھی کہا جاتا ہے۔"
+        explanation: "Pertussis کو کالی کھانسی یا 'Black cough' بھی کہا جاتا ہے।"
     },
     {
         question: "Which vaccine should be shaken before use?",
@@ -2661,7 +2719,7 @@
         options: ["Recombinant", "Live", "Killed", "Toxoid"],
         correct: 0,
         difficulty: "hard",
-        explanation: "Hepatitis B کی ویکسین recombinant DNA ٹیکنالوجی کے ذریعے تیار کی جاتی ہے۔"
+        explanation: "Hepatitis B کی ویکسین recombinant DNA ٹیکنالوجی के ذریعے تیار کی جاتی ہے۔"
     },
     {
         question: "Which of the following diseases is bacterial?",
@@ -2717,28 +2775,28 @@
         options: ["Hib", "OPV", "BCG", "TT"],
         correct: 0,
         difficulty: "medium",
-        explanation: "Hib ویکسین دماغی بخار (meningitis) کو روکتی ہے، جو بچوں میں دماغی نقصان کا سبب بن سکتا ہے۔"
+        explanation: "Hib ویکسین دماغی بخار (meningitis) کو روکتی ہے، جو بچوں میں دماغی نقصان کا سبब بن سکتا ہے۔"
     },
     {
         question: "EPI schedule is mainly for:",
         options: ["Children", "Adults", "Old people", "Teachers"],
         correct: 0,
         difficulty: "easy",
-        explanation: "EPI شیڈول کا بنیادی مقصد بچوں کو مختلف بیماریوں سے بچانا ہے۔"
+        explanation: "EPI شیڈول کا بنیادی مقصد بچوں کو مختلف بیماریوں سے بچانا ہے।"
     },
     {
         question: "Which of the following vaccines is given in two doses?",
         options: ["Measles", "BCG", "TT", "Hepatitis B"],
         correct: 0,
         difficulty: "medium",
-        explanation: "خسرہ (Measles) کی ویکسین دو ڈوز میں دی جاتی ہے۔"
+        explanation: "خسرہ (Measles) کی ویکسین دو डोज़ में دی جاتی ہے।"
     },
     {
         question: "Which vitamin deficiency increases measles complications?",
         options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
         correct: 0,
         difficulty: "medium",
-        explanation: "وٹامن اے کی کمی خسرہ کی پیچیدگیوں کو بڑھا سکتی ہے۔"
+        explanation: "وٹامن اے کی کمی خسرہ की پیچیدگیوں کو बढ़ा सकती ہے۔"
     },
     {
         question: "حفاظتی ٹیکوں کے بارے میں عوام کو آگاہی کون دیتا ہے؟",
@@ -2794,6 +2852,7 @@
             reviewBtn: document.getElementById('reviewBtn'),
             restartBtn: document.getElementById('restartBtn'),
             saveBtn: document.getElementById('saveBtn'),
+            resultCard: document.getElementById('result-card'), // Ensure resultCard is defined here
             
             // Review
             reviewContent: document.getElementById('reviewContent'),
@@ -2960,6 +3019,23 @@
             state.questionTimes = new Array(state.questions.length).fill(0);
         }
 
+        // Enhanced Urdu text detection
+        function isUrduText(text) {
+            const urduPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+            return urduPattern.test(text);
+        }
+
+        // Apply appropriate font based on text content
+        function applyLanguageFont(element, text) {
+            if (isUrduText(text)) {
+                element.classList.add('auto-urdu');
+                element.setAttribute('data-lang', 'urdu');
+            } else {
+                element.classList.remove('auto-urdu');
+                element.removeAttribute('data-lang');
+            }
+        }
+
         function displayQuestion() {
             const question = state.questions[state.currentQuestion];
             
@@ -2968,7 +3044,13 @@
             startQuestionTimer();
             
             elements.questionCounter.textContent = `Question ${state.currentQuestion + 1} of ${state.questions.length}`;
-            elements.questionText.textContent = `${state.currentQuestion + 1}. ${question.question}`;
+            
+            // Set question text with proper font detection
+            const questionTextContent = `${state.currentQuestion + 1}. ${question.question}`;
+            elements.questionText.textContent = questionTextContent;
+            
+            // Apply Urdu font if needed
+            applyLanguageFont(elements.questionText, question.question);
             
             // Update difficulty badge
             const difficultyClass = `difficulty-${question.difficulty}`;
@@ -2980,10 +3062,17 @@
             question.options.forEach((option, index) => {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'option-item';
+                
+                const optionText = option.text || option;
+                
                 optionDiv.innerHTML = `
                     <div class="option-radio"></div>
-                    <div class="option-text">${option.text || option}</div>
+                    <div class="option-text">${optionText}</div>
                 `;
+                
+                // Apply Urdu font to option text if needed
+                const optionTextElement = optionDiv.querySelector('.option-text');
+                applyLanguageFont(optionTextElement, optionText);
                 
                 if (state.userAnswers[state.currentQuestion] === index) {
                     optionDiv.classList.add('selected');
@@ -3045,6 +3134,11 @@
                     </div>
                     <div style="color: var(--text-secondary);">${question.explanation}</div>
                 `;
+                
+                // Apply Urdu font to explanation if needed
+                const explanationTextElement = explanationDiv.querySelector('div:last-child');
+                applyLanguageFont(explanationTextElement, question.explanation);
+                
                 elements.optionsContainer.appendChild(explanationDiv);
             }
             
@@ -3203,20 +3297,28 @@
             
             elements.reviewCounter.textContent = `Question ${state.currentReviewQuestion + 1} of ${state.questions.length}`;
             
+            // Determine if question text is Urdu
+            const questionText = question.question;
+            const isQuestionUrdu = isUrduText(questionText);
+            const questionFontStyle = isQuestionUrdu ? 'font-family: "Noto Nastaliq Urdu", serif; direction: rtl; text-align: right; line-height: 1.8;' : '';
+            
             let reviewHTML = `
-                <div style="background: var(--bg-primary); border-radius: var(--radius-xl); padding: var(--space-6); margin-bottom: var(--space-6);">
+                <div class="review-item" style="background: var(--bg-primary); border-radius: var(--radius-xl); padding: var(--space-6); margin-bottom: var(--space-6);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
                         <div class="difficulty-badge difficulty-${question.difficulty}">${question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}</div>
                         <div style="color: var(--text-secondary); font-size: 0.875rem;">
                             <i class="fas fa-clock"></i> ${formatTime(questionTime)}
                         </div>
                     </div>
-                    <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: var(--space-6); color: var(--text-primary);">${state.currentReviewQuestion + 1}. ${question.question}</div>
+                    <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: var(--space-6); color: var(--text-primary); ${questionFontStyle}">${state.currentReviewQuestion + 1}. ${questionText}</div>
                     <div style="display: flex; flex-direction: column; gap: var(--space-4);">
             `;
             
             question.options.forEach((option, index) => {
                 const optionText = option.text || option;
+                const isOptionUrdu = isUrduText(optionText);
+                const optionFontStyle = isOptionUrdu ? 'font-family: "Noto Nastaliq Urdu", serif; direction: rtl; text-align: right; line-height: 1.8;' : '';
+                
                 let icon = 'fa-circle';
                 let bgColor = 'var(--bg-secondary)';
                 let textColor = 'var(--text-primary)';
@@ -3241,7 +3343,7 @@
                 reviewHTML += `
                     <div style="display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); background: ${bgColor}; border: 2px solid ${borderColor}; border-radius: var(--radius-lg); color: ${textColor}; font-weight: ${fontWeight};">
                         <i class="fas ${icon}" style="width: 20px; height: 20px; flex-shrink: 0;"></i>
-                        <span>${optionText}</span>
+                        <span style="${optionFontStyle}">${optionText}</span>
                     </div>
                 `;
             });
@@ -3252,14 +3354,17 @@
                 reviewHTML += '<div style="margin-top: var(--space-4); padding: var(--space-4); background: rgba(245, 158, 11, 0.1); border-radius: var(--radius-lg); color: var(--warning); font-weight: 600;"><i class="fas fa-exclamation-triangle"></i> Not Attempted</div>';
             }
             
-            // Add explanation
+            // Add explanation with Urdu font support
             if (question.explanation) {
+                const isExplanationUrdu = isUrduText(question.explanation);
+                const explanationFontStyle = isExplanationUrdu ? 'font-family: "Noto Nastaliq Urdu", serif; direction: rtl; text-align: right; line-height: 1.8;' : '';
+                
                 reviewHTML += `
                     <div style="margin-top: var(--space-4); padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--primary);">
                         <div style="font-weight: 600; color: var(--primary); margin-bottom: var(--space-2);">
                             <i class="fas fa-lightbulb"></i> Explanation
                         </div>
-                        <div style="color: var(--text-secondary);">${question.explanation}</div>
+                        <div style="color: var(--text-secondary); ${explanationFontStyle}">${question.explanation}</div>
                     </div>
                 `;
             }
@@ -3421,8 +3526,380 @@
             restartTest();
         });
 
+        // Enhanced Urdu text processing for PDF generation
+        function processUrduTextForPDF(text) {
+            // For PDF generation, we'll use romanized text to avoid font issues
+            const cleanedText = text.replace(/\s+/g, ' ').trim();
+            
+            if (isUrduText(cleanedText)) {
+                // Enhanced romanization mapping for common Urdu words
+                const urduRomanMap = {
+                    // Question words
+                    'کیا': 'kya',
+                    'کون': 'kaun', 
+                    'کہاں': 'kahan',
+                    'کب': 'kab',
+                    'کیسے': 'kaise',
+                    'کیوں': 'kyun',
+                    // Common words
+                    'میں': 'mein',
+                    'ہے': 'hai',
+                    'کا': 'ka',
+                    'کی': 'ki',
+                    'کے': 'ke',
+                    'سے': 'se',
+                    'کو': 'ko',
+                    'یہ': 'yeh',
+                    'اور': 'aur',
+                    'جو': 'jo',
+                    // Medical terms
+                    'ویکسین': 'vaccine',
+                    'ٹیکہ': 'teeka',
+                    'بیماری': 'bimari',
+                    'علاج': 'ilaaj',
+                    'دوا': 'dawa',
+                    'ہسپتال': 'hospital',
+                    'ڈاکٹر': 'doctor',
+                    // General terms
+                    'سوال': 'sawal',
+                    'جواب': 'jawab',
+                    'صحیح': 'sahih',
+                    'غلط': 'ghalat',
+                    'وقت': 'waqt',
+                    'لگانے': 'lagane',
+                    'بنیادی': 'bunyadi',
+                    'مقصد': 'maqsad',
+                    'روک': 'rok',
+                    'تھام': 'thaam',
+                    'حفاظتی': 'hifazati',
+                    'بچاؤ': 'bachao'
+                };
+                
+                // Try to romanize common Urdu words
+                let romanized = cleanedText;
+                Object.keys(urduRomanMap).forEach(urdu => {
+                    const regex = new RegExp(urdu, 'g');
+                    romanized = romanized.replace(regex, urduRomanMap[urdu]);
+                });
+                
+                // If significant romanization occurred, return it
+                if (romanized !== cleanedText) {
+                    return `[Urdu: ${romanized}]`;
+                }
+                
+                // Otherwise return a generic placeholder with cleaned text preview
+                const shortText = cleanedText.length > 40 ? cleanedText.substring(0, 40) + '...' : cleanedText;
+                return `[Urdu Text: Question/Option in Urdu]`;
+            }
+            
+            return cleanedText;
+        }
+        
+        // Helper function to clean and format text
+        function cleanText(text) {
+            return text.replace(/\s+/g, ' ').trim();
+        }
+        
+        // Fast PDF generation function - Instant generation
+        function generateFastPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const results = calculateResults();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            let yPosition = margin;
+            
+            // Header with gradient effect
+            doc.setFillColor(99, 102, 241);
+            doc.rect(0, 0, pageWidth, 35, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('VACCINATOR MOCK TEST RESULT', pageWidth / 2, 15, { align: 'center' });
+            
+            // Subtitle
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            doc.text(`Generated on: ${currentDate}`, pageWidth / 2, 28, { align: 'center' });
+            
+            yPosition = 45;
+            doc.setTextColor(0, 0, 0);
+            
+            // Test Summary Header
+            doc.setFillColor(248, 250, 252);
+            doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'F');
+            doc.setDrawColor(99, 102, 241);
+            doc.setLineWidth(0.5);
+            doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'S');
+            
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(55, 65, 81);
+            doc.text('Test Summary / Test Results Summary', margin + 5, yPosition + 8);
+            yPosition += 20;
+            
+            // Summary Data - Fast rendering
+            const summaryData = [
+                { label: 'Total Questions / Kul Sawalat', value: state.questions.length },
+                { label: 'Score / Nambar', value: `${results.percentage}%` },
+                { label: 'Correct / Sahih', value: results.correct },
+                { label: 'Incorrect / Ghalat', value: results.incorrect },
+                { label: 'Unattempted / Na-kiye gaye', value: results.unattempted },
+                { label: 'Time Taken / Waqt', value: formatTime(results.timeTaken) }
+            ];
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            summaryData.forEach(item => {
+                doc.text(`${item.label}: ${item.value}`, margin + 5, yPosition);
+                yPosition += 8;
+            });
+            
+            yPosition += 10;
+            
+            // Questions Review Header
+            doc.setFillColor(248, 250, 252);
+            doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'F');
+            doc.setDrawColor(99, 102, 241);
+            doc.setLineWidth(0.5);
+            doc.rect(margin, yPosition, pageWidth - 2 * margin, 12, 'S');
+            
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(55, 65, 81);
+            doc.text('Questions Review / Questions Analysis', margin + 5, yPosition + 8);
+            yPosition += 25;
+            
+            // Process ALL questions quickly - No async operations
+            const totalQuestions = state.questions.length;
+            
+            for (let i = 0; i < totalQuestions; i++) {
+                const question = state.questions[i];
+                const userAnswer = state.userAnswers[i];
+                const correctAnswer = question.correct;
+                
+                // Smart page break
+                if (yPosition > pageHeight - 80) {
+                    doc.addPage();
+                    yPosition = margin;
+                }
+                
+                // Question header with modern design
+                doc.setFillColor(249, 250, 251);
+                doc.rect(margin, yPosition, pageWidth - 2 * margin, 18, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(margin, yPosition, pageWidth - 2 * margin, 18, 'S');
+                
+                // Question number
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(55, 65, 81);
+                doc.text(`Question ${i + 1}`, margin + 8, yPosition + 8);
+                
+                // Question count
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(107, 114, 128);
+                doc.text(`(${i + 1} of ${totalQuestions})`, margin + 8, yPosition + 15);
+                
+                // Difficulty badge
+                const difficultyColors = {
+                    easy: [16, 185, 129],
+                    medium: [245, 158, 11], 
+                    hard: [239, 68, 68]
+                };
+                const diffColor = difficultyColors[question.difficulty] || [156, 163, 175];
+                doc.setFillColor(diffColor[0], diffColor[1], diffColor[2]);
+                doc.roundedRect(margin + 90, yPosition + 3, 30, 10, 2, 2, 'F');
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(255, 255, 255);
+                doc.text(question.difficulty.toUpperCase(), margin + 95, yPosition + 9);
+                
+                // Status indicator
+                let status = 'Not Attempted';
+                let statusColor = [156, 163, 175];
+                if (userAnswer !== undefined) {
+                    if (userAnswer === correctAnswer) {
+                        status = 'CORRECT';
+                        statusColor = [16, 185, 129];
+                    } else {
+                        status = 'INCORRECT';
+                        statusColor = [239, 68, 68];
+                    }
+                }
+                
+                doc.setFillColor(statusColor[0], statusColor[1], statusColor[2]);
+                doc.roundedRect(pageWidth - margin - 45, yPosition + 3, 40, 10, 2, 2, 'F');
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(255, 255, 255);
+                doc.text(status, pageWidth - margin - 42, yPosition + 9);
+                
+                yPosition += 25;
+                doc.setTextColor(0, 0, 0);
+                
+                // Question text - Fast processing
+                const questionText = cleanText(question.question);
+                
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(55, 65, 81);
+                doc.text('Question / Sawal:', margin + 8, yPosition);
+                yPosition += 8;
+                
+                // Process question text instantly
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(31, 41, 55);
+                
+                let displayText = questionText;
+                if (isUrduText(questionText)) {
+                    displayText = processUrduTextForPDF(questionText);
+                }
+                
+                const questionLines = doc.splitTextToSize(displayText, pageWidth - 2 * margin - 20);
+                doc.text(questionLines, margin + 8, yPosition);
+                yPosition += questionLines.length * 5 + 10;
+                
+                // Options header
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(55, 65, 81);
+                doc.text('Options / Ikhtiyarat:', margin + 8, yPosition);
+                yPosition += 10;
+                
+                // Process options quickly
+                for (let optIndex = 0; optIndex < question.options.length; optIndex++) {
+                    const option = question.options[optIndex];
+                    const optionText = cleanText(option.text || option);
+                    const optionLetter = String.fromCharCode(65 + optIndex);
+                    
+                    // Check page break
+                    if (yPosition > pageHeight - margin - 30) {
+                        doc.addPage();
+                        yPosition = margin;
+                    }
+                    
+                    // Option styling
+                    let optionColor = [75, 85, 99];
+                    let circleColor = [229, 231, 235];
+                    let statusText = '';
+                    
+                    if (optIndex === correctAnswer) {
+                        optionColor = [16, 185, 129];
+                        circleColor = [16, 185, 129];
+                        statusText = ' [CORRECT]';
+                    } else if (optIndex === userAnswer && userAnswer !== correctAnswer) {
+                        optionColor = [239, 68, 68];
+                        circleColor = [239, 68, 68];
+                        statusText = ' [INCORRECT]';
+                    }
+                    
+                    // Draw option circle
+                    doc.setFillColor(circleColor[0], circleColor[1], circleColor[2]);
+                    doc.circle(margin + 15, yPosition + 4, 5, 'F');
+                    
+                    // Option letter
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(255, 255, 255);
+                    doc.text(optionLetter, margin + 15, yPosition + 5, { align: 'center' });
+                    
+                    // Option text - fast processing
+                    doc.setTextColor(optionColor[0], optionColor[1], optionColor[2]);
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    let displayOptionText = optionText;
+                    if (isUrduText(optionText)) {
+                        displayOptionText = processUrduText(optionText);
+                    }
+                    
+                    const optionLines = doc.splitTextToSize(
+                        `${optionLetter}) ${displayOptionText}${statusText}`, 
+                        pageWidth - 2 * margin - 35
+                    );
+                    doc.text(optionLines, margin + 25, yPosition + 5);
+                    yPosition += Math.max(optionLines.length * 5, 10);
+                }
+                
+                // Add spacing between questions
+                yPosition += 8;
+                
+                // Add subtle divider
+                if (i < totalQuestions - 1) {
+                    doc.setDrawColor(229, 231, 235);
+                    doc.setLineWidth(0.5);
+                    doc.line(margin + 20, yPosition, pageWidth - margin - 20, yPosition);
+                    yPosition += 8;
+                }
+            }
+            
+            // Add footer to final page
+            const totalPages = doc.internal.getCurrentPageInfo().pageNumber;
+            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                doc.setPage(pageNum);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(107, 114, 128);
+                doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - margin, pageHeight - 10, { align: 'right' });
+                doc.text('Vaccinator Mock Test Series', margin, pageHeight - 10);
+            }
+            
+            return doc;
+        }
+
         elements.saveBtn.addEventListener('click', () => {
-            window.print();
+            try {
+                // Show brief loading state
+                elements.saveBtn.disabled = true;
+                elements.saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                showToast('info', 'Generating PDF', 'Creating your test report instantly...');
+                
+                // Generate PDF instantly without delay
+                setTimeout(() => {
+                    try {
+                        const { jsPDF } = window.jspdf;
+                        
+                        if (!jsPDF) {
+                            throw new Error('PDF library not loaded');
+                        }
+                        
+                        // Use fast PDF generation
+                        const doc = generateFastPDF();
+                        
+                        // Generate filename with current date
+                        const testDate = new Date();
+                        const dateString = testDate.toISOString().split('T')[0];
+                        const filename = `Vaccinator_Test_Result_${dateString}.pdf`;
+                        
+                        // Save the PDF instantly
+                        doc.save(filename);
+                        
+                        showToast('success', 'PDF Downloaded!', `All ${state.questions.length} questions saved successfully!`);
+                        
+                    } catch (error) {
+                        console.error('PDF generation error:', error);
+                        showToast('error', 'PDF Error', 'Failed to generate PDF. Please try again.');
+                    } finally {
+                        // Restore button state quickly
+                        elements.saveBtn.disabled = false;
+                        elements.saveBtn.innerHTML = '<i class="fas fa-download"></i> Save as PDF';
+                    }
+                }, 100); // Minimal delay for UI feedback
+                
+            } catch (error) {
+                console.error('Initial error:', error);
+                elements.saveBtn.disabled = false;
+                elements.saveBtn.innerHTML = '<i class="fas fa-download"></i> Save as PDF';
+                showToast('error', 'PDF Error', 'Failed to start PDF generation.');
+            }
         });
 
         elements.backToResultBtn.addEventListener('click', () => {
@@ -3535,7 +4012,6 @@
             }
         }
     </script>
-
     <!-- Footer -->
     <footer style="text-align: center; padding: var(--space-6); background: var(--bg-secondary); color: var(--text-secondary); font-size: 0.875rem; border-top: 1px solid var(--border-color); margin-top: var(--space-8);">
         <div class="container">
@@ -3544,4 +4020,3 @@
     </footer>
 </body>
 </html>
-
