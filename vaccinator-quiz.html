@@ -496,7 +496,7 @@
             transform: translateY(0);
         }
 
-        /* Welcome Section */
+        /* Welcome Section - Enhanced UI/UX */
         .welcome-section {
             min-height: calc(100vh - 80px);
             display: flex;
@@ -507,6 +507,7 @@
             animation: gradientShift 15s ease infinite;
             position: relative;
             overflow: hidden;
+            padding: var(--space-4);
         }
 
         .welcome-section::before {
@@ -516,91 +517,206 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
         }
 
         .welcome-content {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-radius: var(--radius-2xl);
-            padding: var(--space-12);
-            box-shadow: var(--shadow-2xl);
-            max-width: 500px;
+            padding: var(--space-10) var(--space-8);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(99, 102, 241, 0.15);
+            max-width: 460px;
             width: 100%;
             position: relative;
             z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
         }
 
         [data-theme="dark"] .welcome-content {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+        }
+
+        .welcome-icon-wrapper {
+            margin: 0 auto;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.2rem;
+            box-shadow: var(--shadow-glow);
+            margin-bottom: -10px;
         }
 
         .welcome-header {
-            text-align: center;
-            margin-bottom: var(--space-8);
+            margin-bottom: var(--space-2);
         }
 
         .welcome-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: var(--space-2);
+            line-height: 1.2;
         }
 
         .welcome-subtitle {
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .access-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
         }
 
         .form-group {
-            margin-bottom: var(--space-6);
+            margin-bottom: 0;
+            text-align: left;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: var(--space-2);
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 0.95rem;
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
-        .form-input {
+        .input-icon {
+            position: absolute;
+            left: var(--space-4);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            pointer-events: none;
+            transition: color var(--transition);
+        }
+
+        .custom-input {
             width: 100%;
-            padding: var(--space-4) var(--space-5);
+            padding: var(--space-4);
+            padding-left: 3rem;
+            padding-right: 3rem;
             border: 2px solid var(--border-color);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             background: var(--bg-secondary);
             color: var(--text-primary);
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-family: 'JetBrains Mono', monospace;
             transition: all var(--transition);
             outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .form-input:focus {
+        .custom-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background: var(--bg-primary);
+        }
+
+        .custom-input:focus + .input-icon, .custom-input:not(:placeholder-shown) + .input-icon {
+            color: var(--primary);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: var(--space-4);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: var(--space-1);
+            transition: color var(--transition);
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
         }
 
         .error-message {
             color: var(--error);
             font-size: 0.875rem;
-            margin-top: var(--space-2);
+            margin-top: var(--space-3);
             display: none;
             align-items: center;
             gap: var(--space-2);
+            font-weight: 500;
+            background: rgba(239, 68, 68, 0.1);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--error);
         }
 
         .error-message.show {
             display: flex;
-            animation: slideInLeft 0.3s ease-out;
+            animation: slideInLeft 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glowing-btn {
+            padding: 1.1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: var(--radius-xl);
+            justify-content: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .glowing-btn i {
+            transition: transform var(--transition);
+        }
+
+        .glowing-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .welcome-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            justify-content: center;
+            margin-top: var(--space-2);
+        }
+
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+        }
+
+        .feature-badge i {
+            color: var(--primary);
+        }
+
+        .feature-badge:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            background: var(--bg-primary);
         }
 
         /* Buttons */
@@ -1043,13 +1159,30 @@
 
         .palette-grid {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: var(--space-3);
+            overflow-x: auto;
+            padding: var(--space-2) 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar for cleaner look, but keep it functional */
+        .palette-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+        .palette-grid::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-full);
+        }
+        .palette-grid::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: var(--radius-full);
         }
 
         .palette-btn {
             width: 48px;
             height: 48px;
+            flex-shrink: 0;
             border: none;
             border-radius: var(--radius-lg);
             font-weight: 600;
@@ -1572,7 +1705,7 @@
             }
 
             .palette-grid {
-                justify-content: center;
+                justify-content: flex-start;
             }
 
             .help-panel {
@@ -1588,7 +1721,10 @@
 
         @media (max-width: 480px) {
             .welcome-content {
-                padding: var(--space-6);
+                padding: var(--space-8) var(--space-5);
+            }
+            .welcome-title {
+                font-size: 1.8rem;
             }
 
             .quiz-card {
@@ -1726,38 +1862,46 @@
         <section id="welcomeSection" class="section active">
             <div class="welcome-section">
                 <div class="welcome-content animate-scaleIn">
+                    <div class="welcome-icon-wrapper animate-float">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
                     <div class="welcome-header">
-                        <h1 class="welcome-title">Welcome to Vaccinator Mock Test 1</h1>
-                        <p class="welcome-subtitle">Advanced Test Platform with Smart Features</p>
+                        <h1 class="welcome-title">Vaccinator Mock Test 1</h1>
+                        <p class="welcome-subtitle">Enter your secure access code to begin</p>
                     </div>
                     
-                    <form id="accessForm">
+                    <form id="accessForm" class="access-form">
                         <div class="form-group">
-                            <label for="passwordInput" class="form-label">
-                                <i class="fas fa-lock"></i> Test Access Code
-                            </label>
-                            <input 
-                                type="password" 
-                                id="passwordInput" 
-                                class="form-input" 
-                                placeholder="Enter your access code"
-                                autocomplete="off"
-                                required
-                            >
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input 
+                                    type="password" 
+                                    id="passwordInput" 
+                                    class="form-input custom-input" 
+                                    placeholder="Enter access code..."
+                                    autocomplete="off"
+                                    required
+                                >
+                                <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                             <div id="passwordError" class="error-message">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Invalid access code. Please try again.
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Invalid access code. Please try again.</span>
                             </div>
                         </div>
                         
-                        <button type="submit" id="startTestBtn" class="btn btn-primary btn-full">
-                            <i class="fas fa-play"></i>
-                            Start Test
+                        <button type="submit" id="startTestBtn" class="btn btn-primary btn-full glowing-btn">
+                            <span>Start Test</span>
+                            <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
                     
-                    <div style="margin-top: var(--space-8); text-align: center; color: var(--text-secondary); font-size: 0.875rem;">
-                        <p><i class="fas fa-info-circle"></i> Features: Study Mode • Smart Timer • Bookmarks • Difficulty Levels • Detailed Analytics</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge"><i class="fas fa-brain"></i> Study Mode</div>
+                        <div class="feature-badge"><i class="fas fa-stopwatch"></i> Smart Timer</div>
+                        <div class="feature-badge"><i class="fas fa-chart-pie"></i> Analytics</div>
                     </div>
                 </div>
             </div>
@@ -2046,708 +2190,707 @@
             questionTimes: [],
             currentFilter: 'all',
 
-            questions: [
-                {
-        question: "ویکسین لگانے کا بنیادی مقصد کیا ہے؟",
-        options: ["بیماری کا علاج", "بیماری کی روک تھام", "وزن بڑھانا", "طاقت بڑھانا"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "ویکسین کا بنیادی مقصد جسم میں قوت مدافعت پیدا کر کے بیماریوں کو پھیلنے سے روکنا ہے۔"
-    },
+questions: [
     {
-        question: "Smallpox کی ویکسین کس نے ایجاد کی؟",
-        options: ["لوئس پاستور", "ایڈورڈ جینر", "رابرٹ کوچ", "الیگزینڈر فلیمنگ"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "ایڈورڈ جینر نے 1796 میں Smallpox کی ویکسین ایجاد کی۔"
-    },
-    {
-        question: "پاکستان میں EPI کا آغاز کب ہوا؟",
-        options: ["1978", "1985", "1990", "2001"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پاکستان میں Expanded Programme on Immunization (EPI) کا آغاز 1978 میں ہوا۔"
-    },
-    {
-        question: "پولیو کس وائرس کی وجہ سے ہوتا ہے؟",
-        options: ["بیکٹیریا", "وائرس", "فنگس", "پرجیوی"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "پولیو پولیو وائرس کی وجہ سے ہوتا ہے۔"
-    },
-    {
-        question: "پولیو ویکسین کس شکل میں دی جاتی ہے؟",
-        options: ["انجیکشن", "زبانی قطرے", "کیپسول", "مرہم"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "پاکستان میں پولیو کے قطرے منہ کے ذریعے (زبانی) دیے جاتے ہیں۔"
-    },
-    {
-        question: "BCG ویکسین کس بیماری کے لیے دی جاتی ہے؟",
-        options: ["ملیریا", "ٹی بی", "خسرہ", "ہیپاٹائٹس"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "BCG (Bacillus Calmette-Guérin) ویکسین ٹی بی (Tuberculosis) کی روک تھام کے لیے استعمال ہوتی ہے۔"
-    },
-    {
-        question: "DPT ویکسین کتنی بیماریوں سے بچاتی ہے؟",
-        options: ["ایک", "دو", "تین", "چار"],
-        correct: 2,
-        difficulty: "easy",
-        explanation: "DPT ویکسین تین بیماریوں (ڈفتھیریا، پرٹوسس، اور ٹیٹنس) کے خلاف تحفظ فراہم کرتی ہے۔"
-    },
-    {
-        question: "DPT ویکسین کن بیماریوں کے خلاف ہے؟",
-        options: ["ڈفتھیریا، پرٹوسس، ٹیٹنس", "ملیریا، ٹی بی، خسرہ", "کالی کھانسی، نزلہ، بخار", "ہیپاٹائٹس، ٹائیفائیڈ، نزلہ"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "DPT کا مطلب ڈفتھیریا (Diphtheria)، پرٹوسس (Pertussis) اور ٹیٹنس (Tetanus) ہے۔"
-    },
-    {
-        question: "خسرہ کی ویکسین کس عمر میں لگائی جاتی ہے؟",
-        options: ["پیدائش کے وقت", "9 ماہ", "2 سال", "5 سال"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "خسرہ کی پہلی خوراک 9 ماہ کی عمر میں دی جاتی ہے۔"
-    },
-    {
-        question: "Hepatitis B vaccine is given at which age in EPI schedule?",
-        options: ["At birth", "2 months", "6 months", "9 months"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Hepatitis B کی ویکسین EPI شیڈول کے مطابق پیدائش کے وقت ہی دی جاتی ہے۔"
-    },
-    {
-        question: "پولیو کے قطرے کب دیے جاتے ہیں؟",
-        options: ["پیدائش", "1 سال", "5 سال", "10 سال"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پولیو کے قطرے پیدائش کے وقت دیے جاتے ہیں۔"
-    },
-    {
-        question: "Which disease has been eradicated from the world due to vaccination?",
-        options: ["Measles", "Smallpox", "Polio", "Malaria"],
+        question: "Which disease is prevented by the BCG vaccine?",
+        options: ["Polio", "Tuberculosis", "Measles", "Hepatitis"],
         correct: 1,
         difficulty: "medium",
-        explanation: "Smallpox کو دنیا بھر سے ویکسینیشن کی وجہ سے ختم کیا جا چکا ہے۔"
+        explanation: "This question is from Basic Vaccination category."
     },
     {
-        question: "EPI کا مطلب کیا ہے؟",
-        options: ["Expanded Programme on Immunization", "Emergency Programme of Injection", "Extra Protection Initiative", "Environmental Protection Institute"],
+        question: "What is the full form of OPV?",
+        options: ["Oral Polio Vaccine", "Open Polio Vaccine", "Oral Prevention Vaccine", "Optional Polio Vaccine"],
         correct: 0,
-        difficulty: "easy",
-        explanation: "EPI کا پورا نام Expanded Programme on Immunization ہے، جس کا مقصد حفاظتی ٹیکوں کے پروگرام کو وسیع کرنا ہے۔"
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "At what age is the Measles vaccine first given?",
+        options: ["At birth", "6 months", "9 months", "2 years"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
     },
     {
         question: "Pentavalent vaccine protects against how many diseases?",
+        options: ["2", "3", "5", "7"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "What is the full form of EPI?",
+        options: ["Expanded Program on Immunization", "Emergency Program of Injection", "Expanded Polio Initiative", "Early Prevention Immunity"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "BCG vaccine is administered through which route?",
+        options: ["Oral", "Intradermal", "Intravenous", "Subcutaneous"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Polio vaccine is given by which method?",
+        options: ["Injection", "Oral drops", "Skin patch", "Nasal spray"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Hepatitis B vaccine protects which organ?",
+        options: ["Heart", "Kidney", "Liver", "Lungs"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "What is the purpose of a vaccination card?",
+        options: ["School admission", "Identity proof", "Record of vaccines", "Birth certificate"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "TT vaccine is given to pregnant women to prevent:",
+        options: ["Fever", "Tetanus", "Polio", "Malaria"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Why is the cold chain maintained?",
+        options: ["To store food", "To keep vaccines effective", "To cool water", "To freeze syringes"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "What is the ideal temperature for vaccine storage?",
+        options: ["0°C to 2°C", "2°C to 8°C", "10°C to 15°C", "Below -10°C"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Used syringes should be disposed in:",
+        options: ["Plastic bag", "Open dustbin", "Safety box", "Water container"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Measles is a:",
+        options: ["Bacterial disease", "Viral disease", "Fungal disease", "Genetic disease"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Vitamin A is usually given with which vaccine?",
+        options: ["BCG", "Measles", "TT", "OPV"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "A fully immunized child is usually under:",
+        options: ["6 months", "9 months", "1 year", "5 years"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Which vaccine is given through a dropper?",
+        options: ["BCG", "OPV", "Pentavalent", "TT"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Vaccine Vial Monitor (VVM) indicates:",
+        options: ["Vaccine quantity", "Vaccine price", "Heat exposure status", "Expiry date only"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Auto-disable syringes are used because they:",
+        options: ["Can be reused", "Are inexpensive", "Prevent reuse", "Hold more medicine"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "The main purpose of routine immunization is:",
+        options: ["Weight gain", "Disease prevention", "Better sleep", "Faster growth"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Basic Vaccination category."
+    },
+    {
+        question: "Choose the correct spelling:",
+        options: ["Enviroment", "Environment", "Envirnment", "Enviornment"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Synonym of “Happy” is:",
+        options: ["Sad", "Angry", "Joyful", "Weak"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Antonym of “Increase” is:",
+        options: ["Rise", "Expand", "Grow", "Decrease"],
+        correct: 3,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "He ____ to school daily.",
+        options: ["go", "goes", "gone", "going"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Choose the noun:",
+        options: ["Quickly", "Beautiful", "Honesty", "Run"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Ahmed and Ali ____ friends.",
+        options: ["is", "am", "are", "was"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Opposite of “Early” is:",
+        options: ["Soon", "Fast", "Late", "Sharp"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "“Apple” is a:",
+        options: ["Verb", "Pronoun", "Noun", "Adjective"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "She is ____ honest girl.",
+        options: ["a", "an", "the", "no article"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Past tense of “Eat” is:",
+        options: ["Eated", "Ate", "Eating", "Eaten"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Choose the correct sentence:",
+        options: ["He do not play.", "He does not play.", "He not play.", "He did not plays."],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "“Beautiful” is a:",
+        options: ["Verb", "Adjective", "Noun", "Pronoun"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "The sun ____ in the east.",
+        options: ["rise", "rises", "rose", "rising"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Synonym of “Brave” is:",
+        options: ["Weak", "Bold", "Coward", "Lazy"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Antonym of “Hot” is:",
+        options: ["Warm", "Cold", "Heat", "Boil"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "I ____ my homework yesterday.",
+        options: ["do", "did", "done", "doing"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Choose the pronoun:",
+        options: ["Quickly", "Ahmed", "They", "Running"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "“Books” is:",
+        options: ["Singular", "Plural", "Verb", "Adjective"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Which is a verb?",
+        options: ["Table", "Run", "Blue", "Happiness"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "He is good ____ English.",
+        options: ["in", "at", "on", "for"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Choose the correct spelling:",
+        options: ["Recieve", "Receive", "Receeve", "Receve"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Opposite of “Rich” is:",
+        options: ["Wealthy", "Strong", "Poor", "Smart"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "We ____ cricket now.",
+        options: ["play", "played", "are playing", "plays"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "“Teacher” is a:",
+        options: ["Pronoun", "Noun", "Verb", "Adverb"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Choose the correct article: ___ moon",
+        options: ["a", "an", "the", "no article"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Past tense of “Go” is:",
+        options: ["Goed", "Gone", "Went", "Going"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "She ____ tea every morning.",
+        options: ["drink", "drinks", "drank", "drinking"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Synonym of “Small” is:",
+        options: ["Tiny", "Huge", "Tall", "Big"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "Antonym of “Clean” is:",
+        options: ["Dirty", "Fresh", "Neat", "Pure"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "They ____ watching TV.",
+        options: ["is", "am", "are", "was"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from English category."
+    },
+    {
+        question: "What is the capital of Pakistan?",
+        options: ["Karachi", "Lahore", "Islamabad", "Quetta"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Who is the founder of Pakistan?",
+        options: ["Allama Iqbal", "Liaquat Ali Khan", "Muhammad Ali Jinnah", "Ayub Khan"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Pakistan got independence in:",
+        options: ["1940", "1945", "1947", "1956"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "What is the capital of Sindh?",
+        options: ["Hyderabad", "Sukkur", "Karachi", "Larkana"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "National language of Pakistan is:",
+        options: ["Punjabi", "Sindhi", "Urdu", "English"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Which is the largest continent?",
+        options: ["Europe", "Africa", "Asia", "Australia"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "National animal of Pakistan is:",
+        options: ["Lion", "Tiger", "Markhor", "Deer"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "UNO stands for:",
+        options: ["Universal Nations Office", "United Nations Organization", "United National Order", "Union Nations Office"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Which is the largest ocean?",
+        options: ["Indian Ocean", "Atlantic Ocean", "Pacific Ocean", "Arctic Ocean"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "National flower of Pakistan is:",
+        options: ["Rose", "Jasmine", "Lily", "Sunflower"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "How many continents are there in the world?",
+        options: ["5", "6", "7", "8"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "SAARC headquarters is located in:",
+        options: ["India", "Nepal", "Pakistan", "Bangladesh"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Who is the national poet of Pakistan?",
+        options: ["Faiz Ahmed Faiz", "Allama Iqbal", "Hafeez Jalandhari", "Ahmed Faraz"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "World War II ended in:",
+        options: ["1942", "1945", "1950", "1939"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "K2 mountain is located in:",
+        options: ["India", "China", "Pakistan", "Nepal"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Currency of Pakistan is:",
+        options: ["Dollar", "Rupee", "Riyal", "Pound"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "The largest organ of the human body is:",
+        options: ["Heart", "Liver", "Skin", "Kidney"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "CPU is known as the ____ of a computer.",
+        options: ["Eye", "Brain", "Hand", "Memory"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Chemical formula of water is:",
+        options: ["CO2", "H2O", "O2", "NaCl"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Who wrote the national anthem of Pakistan?",
+        options: ["Hafeez Jalandhari", "Allama Iqbal", "Faiz Ahmed Faiz", "Ahmed Faraz"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Which is the largest planet in the solar system?",
+        options: ["Earth", "Mars", "Jupiter", "Venus"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Indus River is also called:",
+        options: ["Nile River", "Amazon River", "Sindh River", "Ravi River"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "National sport of Pakistan is:",
+        options: ["Cricket", "Football", "Hockey", "Tennis"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Who was the first man on the moon?",
+        options: ["Neil Armstrong", "Yuri Gagarin", "Newton", "Einstein"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Which is the largest desert in the world?",
+        options: ["Sahara", "Thar", "Arabian", "Cholistan"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "How many provinces are there in Pakistan?",
         options: ["3", "4", "5", "6"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Currency of the USA is:",
+        options: ["Pound", "Dollar", "Euro", "Rupee"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from General Knowledge category."
+    },
+    {
+        question: "Karakoram Highway connects Pakistan with:",
+        options: ["India", "Iran", "China", "Afghanistan"],
         correct: 2,
-        difficulty: "easy",
-        explanation: "Pentavalent ویکسین پانچ بیماریوں (ڈفتھیریا، پرٹوسس، ٹیٹنس، ہیپاٹائٹس B، اور Hib) سے بچاتی ہے۔"
-    },
-    {
-        question: "Pentavalent vaccine includes protection against which diseases?",
-        options: ["DPT + Hepatitis B + Hib", "Malaria + TB + Polio", "Measles + Typhoid + Flu", "None"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Pentavalent ویکسین میں DPT، Hepatitis B اور Hib شامل ہیں۔"
-    },
-    {
-        question: "حفاظتی ٹیکے لگانے کا بنیادی فائدہ کیا ہے؟",
-        options: ["بیماریوں سے بچاؤ", "بچوں کی صحت خراب کرنا", "علاج مہنگا کرنا", "وزن بڑھانا"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "حفاظتی ٹیکوں کا مقصد بچوں اور بڑوں کو بیماریوں سے بچانا ہے۔"
-    },
-    {
-        question: "Cold chain system is used for:",
-        options: ["Keeping food safe", "Keeping vaccines effective", "Water purification", "None"],
-        correct: 1,
         difficulty: "medium",
-        explanation: "کولڈ چین کا نظام ویکسینز کو ان کے محفوظ درجہ حرارت پر رکھنے کے لیے استعمال ہوتا ہے، تاکہ وہ مؤثر رہیں۔"
+        explanation: "This question is from General Knowledge category."
     },
     {
-        question: "ویکسین کو محفوظ رکھنے کا مناسب درجہ حرارت کیا ہے؟",
-        options: ["0°C سے -10°C", "2°C سے 8°C", "10°C سے 20°C", "30°C"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "ویکسینز کو عام طور پر ریفریجریٹر کے درجہ حرارت (2°C سے 8°C) پر رکھا جاتا ہے۔"
-    },
-    {
-        question: "Oral polio vaccine is abbreviated as:",
-        options: ["IPV", "OPV", "BCG", "DPT"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "Oral Polio Vaccine کو مختصراً OPV کہا جاتا ہے۔"
-    },
-    {
-        question: "Injected polio vaccine is called:",
-        options: ["OPV", "IPV", "BCG", "DPT"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "Injected Polio Vaccine کو IPV کہا جاتا ہے۔"
-    },
-    {
-        question: "ویکسین کی مؤثریت کو برقرار رکھنے کے لیے کیا ضروری ہے؟",
-        options: ["سرد زنجیر", "دھوپ میں رکھنا", "کمرے کے درجہ حرارت پر رکھنا", "پانی میں رکھنا"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "سرد زنجیر (cold chain) ویکسین کی افادیت کو برقرار رکھنے کے لیے ضروری ہے تاکہ وہ خراب نہ ہوں۔"
-    },
-    {
-        question: "The full form of BCG is:",
-        options: ["Bacillus Calmette Guerin", "Bacterial Cell Growth", "Biological Chemical Growth", "None"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "BCG کا پورا نام Bacillus Calmette-Guérin ہے۔"
-    },
-    {
-        question: "BCG ویکسین کہاں لگائی جاتی ہے؟",
-        options: ["بازو پر", "ٹانگ پر", "پیٹ پر", "منہ کے ذریعے"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "BCG کا ٹیکہ بازو پر لگایا جاتا ہے۔"
-    },
-    {
-        question: "Which of the following is a live attenuated vaccine?",
-        options: ["Measles", "Tetanus", "Hepatitis B", "Diphtheria"],
-        correct: 0,
-        difficulty: "hard",
-        explanation: "خسرہ (Measles) کی ویکسین زندہ مگر کمزور جراثیم پر مشتمل ہوتی ہے، جسے live attenuated vaccine کہتے ہیں۔"
-    },
-    {
-        question: "خسرہ کی ویکسین کس طریقے سے دی جاتی ہے؟",
-        options: ["زبانی", "انجیکشن", "کیپسول", "مرہم"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "خسرہ کی ویکسین انجیکشن کے ذریعے دی جاتی ہے۔"
-    },
-    {
-        question: "The vaccine for tetanus is:",
-        options: ["TT", "OPV", "BCG", "Measles"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ٹیٹنس (Tetanus) کے لیے TT (Tetanus Toxoid) ویکسین دی جاتی ہے۔"
-    },
-    {
-        question: "حاملہ عورتوں کو کونسی ویکسین لازمی دی جاتی ہے؟",
-        options: ["BCG", "TT", "OPV", "Hepatitis B"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "حاملہ خواتین کو ٹیٹنس (TT) کی ویکسین دی جاتی ہے تاکہ ماں اور بچے دونوں کو ٹیٹنس سے بچایا جا سکے۔"
-    },
-    {
-        question: "TT stands for:",
-        options: ["Tetanus Toxoid", "Total Treatment", "Temporary Therapy", "None"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "TT کا مطلب Tetanus Toxoid ہے۔"
-    },
-    {
-        question: "Hepatitis B mainly affects which organ?",
-        options: ["Kidney", "Liver", "Heart", "Lungs"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "Hepatitis B جگر کو متاثر کرتی ہے۔"
-    },
-    {
-        question: "خسرہ کی علامات میں سے کونسی ہے؟",
-        options: ["بخار", "سانس کی تکلیف", "زردی", "ہڈیوں کا درد"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "خسرہ کی ابتدائی علامات میں تیز بخار شامل ہے۔"
-    },
-    {
-        question: "Diphtheria affects which part of the body?",
-        options: ["Throat", "Liver", "Stomach", "Brain"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "ڈفتھیریا گلے اور اوپری سانس کی نالی کو متاثر کرتا ہے۔"
-    },
-    {
-        question: "Pertussis is commonly known as:",
-        options: ["Whooping cough", "Chickenpox", "Polio", "Measles"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Pertussis کو عام طور پر 'Whooping cough' یا کالی کھانسی کہا جاتا ہے۔"
-    },
-    {
-        question: "Tetanus is caused by:",
-        options: ["Virus", "Bacteria", "Fungus", "Parasite"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "Tetanus کا سبب ایک بیکٹیریا Clostridium tetani ہے۔"
-    },
-    {
-        question: "ویکسینیشن کے دوران سب سے اہم احتیاط کیا ہے؟",
-        options: ["صاف ستھری سوئی", "پرانی سوئی کا استعمال", "زبردستی ٹیکہ لگانا", "ویکسین کو گرم رکھنا"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسینیشن کے دوران جراثیم سے پاک اور صاف ستھری سوئی کا استعمال بہت اہم ہے۔"
-    },
-    {
-        question: "Which vaccine is given at birth in Pakistan?",
-        options: ["BCG", "Measles", "DPT", "Typhoid"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پاکستان میں پیدائش کے وقت BCG کی ویکسین دی جاتی ہے۔"
-    },
-    {
-        question: "EPI schedule in Pakistan includes how many vaccines?",
-        options: ["4", "6", "8", "10"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "پاکستان کے EPI شیڈول میں چھ مختلف بیماریوں کی ویکسینز شامل ہیں۔"
-    },
-    {
-        question: "پولیو کے خاتمے کے لیے کتنی بار مہم چلائی جاتی ہے؟",
-        options: ["سال میں ایک بار", "بار بار", "کبھی کبھار", "نہیں چلائی جاتی"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "پولیو کے مکمل خاتمے کے لیے قومی اور ذیلی سطح پر بار بار مہمیں چلائی جاتی ہیں۔"
-    },
-    {
-        question: "Which of the following is not a vaccine-preventable disease?",
-        options: ["Polio", "Malaria", "Measles", "Tetanus"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "ملیریا کی ویکسین ابھی تک EPI میں شامل نہیں ہے، یہ ایک دوا سے قابل علاج بیماری ہے۔"
-    },
-    {
-        question: "ویکسین دینے کے بعد کونسی چیز نوٹ کرنا ضروری ہے؟",
-        options: ["تاریخ", "بچے کا نام بھول جانا", "ویکسین کی بوتل پھینک دینا", "کچھ بھی نہیں"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسین دینے کے بعد ویکسین کارڈ پر تاریخ اور اگلی خوراک کی تاریخ نوٹ کرنا بہت ضروری ہے۔"
-    },
-    {
-        question: "Vaccine vial monitor (VVM) is used for:",
-        options: ["Checking expiry date", "Checking heat exposure", "Checking manufacturing", "None"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "VVM کا استعمال ویکسین کے زیادہ گرمی کے سامنے آنے کی جانچ کے لیے ہوتا ہے۔"
-    },
-    {
-        question: "VVM کا رنگ بدلنے کا مطلب کیا ہے؟",
-        options: ["ویکسین خراب", "ویکسین اچھی", "ویکسین مضبوط", "ویکسین کمزور"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "اگر VVM کا رنگ بدل جائے تو اس کا مطلب ہے کہ ویکسین زیادہ گرمی کی وجہ سے خراب ہو چکی ہے۔"
-    },
-    {
-        question: "Which of the following is a killed vaccine?",
-        options: ["OPV", "IPV", "Measles", "BCG"],
-        correct: 1,
-        difficulty: "hard",
-        explanation: "IPV (Inactivated Polio Vaccine) مردہ پولیو وائرس سے بنی ہوتی ہے، اس لیے اسے killed vaccine کہتے ہیں۔"
-    },
-    {
-        question: "خسرہ سے بچاؤ کے لیے کتنے ڈوز دیے جاتے ہیں؟",
-        options: ["ایک", "دو", "تین", "چار"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "خسرہ سے مکمل بچاؤ کے لیے دو ڈوز دیے جاتے ہیں، پہلا 9 ماہ پر اور دوسرا 15 ماہ پر۔"
-    },
-    {
-        question: "Which of the following is given subcutaneously?",
-        options: ["BCG", "Measles", "OPV", "Hepatitis B"],
-        correct: 1,
-        difficulty: "hard",
-        explanation: "خسرہ (Measles) کی ویکسین subcutaneously یعنی جلد کے نیچے دی جاتی ہے۔"
-    },
-    {
-        question: "Pentavalent vaccine includes protection against:",
-        options: ["DPT + Hepatitis B + Hib", "Malaria + Measles + Typhoid", "Flu + Cold + Pneumonia", "None"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Pentavalent ویکسین پانچ بیماریوں (DPT، Hepatitis B اور Hib) سے تحفظ فراہم کرتی ہے۔"
-    },
-    {
-        question: "Hib disease mainly causes:",
-        options: ["Meningitis", "Hepatitis", "Malaria", "Typhoid"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "Hib (Haemophilus influenzae type b) بچوں میں دماغی بخار (Meningitis) کا سبب بنتی ہے۔"
-    },
-    {
-        question: "حفاظتی ٹیکہ لگانے کے بعد بچے کو کیا دینا چاہیے؟",
-        options: ["دودھ", "دوائی", "پانی", "نمکین پانی"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسین کے بعد بچے کو ماں کا دودھ یا دیگر مناسب خوراک دینا چاہیے۔"
-    },
-    {
-        question: "Which of the following vaccines is stored in the freezer?",
-        options: ["OPV", "DPT", "Hepatitis B", "TT"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "OPV (Oral Polio Vaccine) کو فریزر میں منجمد حالت میں رکھا جاتا ہے۔"
-    },
-    {
-        question: "Which of the following vaccines is never frozen?",
-        options: ["OPV", "Hepatitis B", "Measles", "BCG"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "Hepatitis B کی ویکسین کو کبھی بھی منجمد نہیں کیا جاتا۔"
-    },
-    {
-        question: "ویکسین لگانے کے لیے استعمال ہونے والی سوئی کو کہاں پھینکنا چاہیے؟",
-        options: ["ڈسٹ بن میں", "سیفٹی باکس", "کمرے میں", "کھلے میدان میں"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "استعمال شدہ سوئیوں کو فوری طور پر puncture-proof 'سیفٹی باکس' میں ٹھکانے لگانا چاہیے۔"
-    },
-    {
-        question: "Which organization supports EPI worldwide?",
-        options: ["WHO", "FAO", "UNESCO", "IMF"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "عالمی ادارہ صحت (WHO) دنیا بھر میں EPI پروگراموں کی حمایت کرتا ہے۔"
-    },
-    {
-        question: "ویکسین لگانے کے بعد بچہ روئے تو کیا کرنا چاہیے؟",
-        options: ["تسلی دینا", "نظرانداز کرنا", "مارنا", "دوبارہ ٹیکہ لگانا"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسین کے بعد اگر بچہ روئے تو اسے پیار اور تسلی دینی چاہیے۔"
-    },
-    {
-        question: "OPV drops should be given:",
-        options: ["With food", "On empty stomach", "With milk", "With medicine"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "OPV قطرے خالی پیٹ دیے جائیں تو بہتر ہوتا ہے۔"
-    },
-    {
-        question: "Which is the route of administration for BCG?",
-        options: ["Intradermal", "Subcutaneous", "Intramuscular", "Oral"],
-        correct: 0,
-        difficulty: "hard",
-        explanation: "BCG کی ویکسین intradermal روٹ سے دی جاتی ہے، یعنی جلد کی اوپری تہہ میں۔"
-    },
-    {
-        question: "Hepatitis B vaccine is given:",
-        options: ["Intramuscular", "Oral", "Subcutaneous", "Intradermal"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "Hepatitis B کی ویکسین intramuscular یعنی پٹھے میں دی جاتی ہے۔"
-    },
-    {
-        question: "DPT vaccine is given:",
-        options: ["Intramuscular", "Oral", "Subcutaneous", "Intradermal"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "DPT ویکسین بھی intramuscular روٹ سے دی جاتی ہے۔"
-    },
-    {
-        question: "ویکسین کی مدت ختم ہونے کے بعد اس کا استعمال؟",
-        options: ["جائز", "ناجائز", "زیادہ مؤثر", "کم مؤثر"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "مدت ختم ہونے کے بعد ویکسین کا استعمال نہ تو مؤثر ہوتا ہے اور نہ ہی محفوظ۔"
-    },
-    {
-        question: "Which disease is called 'childhood paralysis'?",
-        options: ["Polio", "Measles", "Diphtheria", "Tetanus"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پولیو کو 'بچپن کا فالج' (childhood paralysis) بھی کہا جاتا ہے کیونکہ یہ بچوں میں فالج کا سبب بن سکتا ہے۔"
-    },
-    {
-        question: "Expanded Programme on Immunization was started by WHO in:",
-        options: ["1974", "1980", "1985", "1990"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "عالمی ادارہ صحت (WHO) نے EPI کا آغاز 1974 میں کیا۔"
-    },
-    {
-        question: "پاکستان میں ویکسین پروگرام کس کی نگرانی میں چلتا ہے؟",
-        options: ["محکمہ تعلیم", "محکمہ صحت", "محکمہ پولیس", "محکمہ زراعت"],
-        correct: 1,
-        difficulty: "easy",
-        explanation: "پاکستان میں حفاظتی ٹیکوں کا پروگرام وفاقی اور صوبائی محکمہ صحت کی نگرانی میں چلتا ہے۔"
-    },
-    {
-        question: "Which vaccine prevents meningitis?",
-        options: ["Hib", "OPV", "DPT", "Measles"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "Hib (Haemophilus influenzae type b) ویکسین بچوں کو Meningitis سے بچاتی ہے۔"
-    },
-    {
-        question: "Which disease causes lockjaw?",
-        options: ["Tetanus", "Measles", "Polio", "Diphtheria"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Tetanus (کزاز) ایک بیماری ہے جس میں جبڑے کے پٹھے اکڑ جاتے ہیں، اس لیے اسے 'lockjaw' کہتے ہیں۔"
-    },
-    {
-        question: "Which disease is characterized by severe cough with a “whoop” sound?",
-        options: ["Pertussis", "Polio", "Measles", "Malaria"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Pertussis (کالی کھانسی) میں شدید کھانسی کے ساتھ 'ہوپ' کی آواز آتی ہے۔"
-    },
-    {
-        question: "خسرہ کی ویکسین کس شکل میں ہے؟",
-        options: ["زنده", "مردہ", "کیپسول", "پاؤڈر"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "خسرہ کی ویکسین زندہ مگر کمزور وائرس پر مشتمل ہوتی ہے۔"
-    },
-    {
-        question: "Which vaccine is used for tuberculosis?",
-        options: ["BCG", "DPT", "OPV", "Hepatitis B"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ٹی بی (tuberculosis) کی روک تھام کے لیے BCG کی ویکسین دی جاتی ہے۔"
-    },
-    {
-        question: "Polio virus mainly attacks:",
-        options: ["Nervous system", "Heart", "Liver", "Lungs"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پولیو وائرس بنیادی طور پر اعصابی نظام (nervous system) پر حملہ کرتا ہے۔"
-    },
-    {
-        question: "Hib stands for:",
-        options: ["Haemophilus influenzae type b", "Human influenza bacteria", "Hepatitis immunization booster", "None"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "Hib کا پورا نام Haemophilus influenzae type b ہے۔"
-    },
-    {
-        question: "بچوں کو حفاظتی ٹیکے کب دینے چاہئیں؟",
-        options: ["وقت پر", "کبھی بھی", "جب والدین چاہیں", "صرف بیمار بچوں کو"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "بچوں کو ویکسین EPI شیڈول کے مطابق وقت پر دینی چاہئیں۔"
-    },
-    {
-        question: "Which is the route of administration for TT vaccine?",
-        options: ["Intramuscular", "Oral", "Subcutaneous", "Intradermal"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "TT ویکسین intramuscular یعنی پٹھے میں دی جاتی ہے۔"
-    },
-    {
-        question: "Vaccine wastage can occur if:",
-        options: ["Cold chain is broken", "Used on time", "Stored properly", "Given correctly"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "اگر کولڈ چین ٹوٹ جائے تو ویکسین خراب ہو کر ضائع ہو جاتی ہے۔"
-    },
-    {
-        question: "Which vaccine provides lifelong immunity?",
-        options: ["Measles", "Smallpox", "DPT", "OPV"],
-        correct: 1,
-        difficulty: "medium",
-        explanation: "Smallpox کی ویکسین سے زندگی بھر کے لیے قوت مدافعت ملتی ہے۔"
-    },
-    {
-        question: "Hepatitis B transmission is through:",
-        options: ["Blood", "Air", "Water", "Mosquito"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "Hepatitis B کا وائرس خون کے ذریعے منتقل ہوتا ہے۔"
-    },
-    {
-        question: "Which disease causes high fever, cough, rash, and red eyes?",
-        options: ["Measles", "Polio", "Hepatitis", "Malaria"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "خسرہ (Measles) کی علامات میں تیز بخار، کھانسی، ریش اور آنکھوں کا لال ہونا شامل ہیں۔"
-    },
-    {
-        question: "Which vaccine prevents diphtheria?",
-        options: ["DPT", "BCG", "TT", "OPV"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "DPT ویکسین ڈفتھیریا سے بچاؤ کے لیے استعمال ہوتی ہے۔"
-    },
-    {
-        question: "کالی کھانسی کو انگریزی میں کیا کہتے ہیں؟",
-        options: ["Whooping cough", "Chickenpox", "Influenza", "Typhoid"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "کالی کھانسی کو انگریزی میں Whooping cough کہتے ہیں۔"
-    },
-    {
-        question: "Which vaccine prevents neonatal tetanus?",
-        options: ["TT", "DPT", "Hepatitis B", "OPV"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "حاملہ خواتین کو TT ویکسین نوزائیدہ بچوں کو ٹیٹنس سے بچانے کے لیے دی جاتی ہے۔"
-    },
-    {
-        question: "What is the storage temperature of OPV?",
-        options: ["-15°C to -25°C", "2°C to 8°C", "20°C to 25°C", "None"],
-        correct: 0,
-        difficulty: "hard",
-        explanation: "OPV کو -15°C سے -25°C کے درمیان فریزر میں محفوظ کیا جاتا ہے۔"
-    },
-    {
-        question: "ویکسین کی شیلف لائف کہاں لکھی ہوتی ہے؟",
-        options: ["بوتل پر", "ڈبے پر", "نرس پر", "ڈاکٹر پر"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسین کی تاریخ استعمال (expiry date) اس کی بوتل پر لکھی ہوتی ہے۔"
-    },
-    {
-        question: "Which vaccine is given at 6, 10, and 14 weeks?",
-        options: ["DPT", "BCG", "Measles", "Typhoid"],
-        correct: 0,
-        difficulty: "medium",
-        explanation: "DPT کی تین خوراکیں بالترتیب 6، 10 اور 14 ہفتوں پر دی جاتی ہیں۔"
-    },
-    {
-        question: "IPV is given through:",
-        options: ["Injection", "Oral", "Nasal", "Capsule"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "IPV (Inactivated Polio Vaccine) انجیکشن کے ذریعے دی جاتی ہے۔"
-    },
-    {
-        question: "Which of the following is not included in EPI?",
-        options: ["DPT", "Measles", "Malaria", "OPV"],
+        question: "Largest river of Pakistan is:",
+        options: ["Ravi", "Chenab", "Indus", "Jhelum"],
         correct: 2,
-        difficulty: "easy",
-        explanation: "Malaria EPI کے پروگرام میں شامل نہیں ہے۔"
-    },
-    {
-        question: "Which of the following is a viral disease?",
-        options: ["Polio", "Diphtheria", "Pertussis", "Tetanus"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پولیو ایک وائرل بیماری ہے۔"
-    },
-    {
-        question: "Which vaccine is heat sensitive?",
-        options: ["OPV", "TT", "DPT", "Hepatitis B"],
-        correct: 0,
         difficulty: "medium",
-        explanation: "OPV بہت زیادہ گرمی سے متاثر ہوتی ہے اور اس کی افادیت ختم ہو جاتی ہے۔"
+        explanation: "This question is from General Knowledge category."
     },
     {
-        question: "Which vaccine protects against liver cancer?",
-        options: ["Hepatitis B", "DPT", "BCG", "OPV"],
-        correct: 0,
+        question: "Minar-e-Pakistan is located in:",
+        options: ["Karachi", "Lahore", "Islamabad", "Quetta"],
+        correct: 1,
         difficulty: "medium",
-        explanation: "Hepatitis B کی ویکسین جگر کے کینسر کی روک تھام میں مددگار ہے۔"
+        explanation: "This question is from General Knowledge category."
     },
     {
-        question: "ویکسین بچوں کو کس وجہ سے دی جاتی ہے؟",
-        options: ["بیماریوں سے بچانے", "زیادہ بیمار کرنے", "نیند دلانے", "کھیلنے سے روکنے"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسین بچوں کو مہلک بیماریوں سے بچانے کے لیے دی جاتی ہے۔"
-    },
-    {
-        question: "Which disease is called “Black cough”?",
-        options: ["Pertussis", "Measles", "Polio", "Tetanus"],
-        correct: 0,
+        question: "How many bones are there in the human body?",
+        options: ["200", "206", "210", "300"],
+        correct: 1,
         difficulty: "medium",
-        explanation: "Pertussis کو کالی کھانسی یا 'Black cough' بھی کہا جاتا ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Which vaccine should be shaken before use?",
-        options: ["DPT", "Hepatitis B", "OPV", "Measles"],
-        correct: 0,
+        question: "The Sun is a:",
+        options: ["Planet", "Star", "Satellite", "Galaxy"],
+        correct: 1,
         difficulty: "medium",
-        explanation: "DPT ویکسین استعمال سے پہلے اچھی طرح ہلائی جاتی ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Which type of vaccine is Hepatitis B?",
-        options: ["Recombinant", "Live", "Killed", "Toxoid"],
-        correct: 0,
-        difficulty: "hard",
-        explanation: "Hepatitis B کی ویکسین recombinant DNA ٹیکنالوجی کے ذریعے تیار کی جاتی ہے۔"
-    },
-    {
-        question: "Which of the following diseases is bacterial?",
-        options: ["Tuberculosis", "Polio", "Measles", "Hepatitis"],
-        correct: 0,
+        question: "Plants make food by the process of:",
+        options: ["Digestion", "Respiration", "Photosynthesis", "Evaporation"],
+        correct: 2,
         difficulty: "medium",
-        explanation: "ٹی بی ایک بیکٹیریل بیماری ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Which of the following is a toxoid vaccine?",
-        options: ["Tetanus", "Measles", "Polio", "Hepatitis B"],
-        correct: 0,
+        question: "Which fruit is rich in Vitamin C?",
+        options: ["Banana", "Orange", "Apple", "Mango"],
+        correct: 1,
         difficulty: "medium",
-        explanation: "ٹیٹنس (Tetanus) کی ویکسین ٹوکسائیڈ ویکسین کی ایک قسم ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "بچوں کو حفاظتی ٹیکے کس کے مشورے سے دینے چاہئیں؟",
-        options: ["ڈاکٹر", "استاد", "دکاندار", "پولیس"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "بچوں کو حفاظتی ٹیکے ڈاکٹر یا تربیت یافتہ صحت کے عملے کے مشورے سے دینے چاہئیں۔"
-    },
-    {
-        question: "Which of the following diseases spreads through contaminated water?",
-        options: ["Polio", "Measles", "Tetanus", "Hepatitis B"],
-        correct: 0,
+        question: "Blood is red because of:",
+        options: ["Oxygen", "Plasma", "Hemoglobin", "Water"],
+        correct: 2,
         difficulty: "medium",
-        explanation: "پولیو کا وائرس آلودہ پانی کے ذریعے پھیل سکتا ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Whooping cough mainly affects:",
-        options: ["Respiratory system", "Digestive system", "Nervous system", "Circulatory system"],
-        correct: 0,
+        question: "Normal body temperature of humans is:",
+        options: ["35°C", "37°C", "40°C", "42°C"],
+        correct: 1,
         difficulty: "medium",
-        explanation: "کالی کھانسی سانس کے نظام (respiratory system) کو متاثر کرتی ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Which is the first vaccine given to a newborn?",
-        options: ["BCG", "OPV", "Measles", "DPT"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پیدائش کے وقت دی جانے والی پہلی ویکسین BCG ہے۔"
-    },
-    {
-        question: "Pakistan is working to eradicate which disease?",
-        options: ["Polio", "Malaria", "TB", "Measles"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "پاکستان عالمی سطح پر پولیو کے خاتمے کے لیے کوشاں ہے۔"
-    },
-    {
-        question: "Which vaccine prevents brain damage in children?",
-        options: ["Hib", "OPV", "BCG", "TT"],
-        correct: 0,
+        question: "Sound cannot travel through:",
+        options: ["Air", "Water", "Vacuum", "Solid"],
+        correct: 2,
         difficulty: "medium",
-        explanation: "Hib ویکسین دماغی بخار (meningitis) کو روکتی ہے، جو بچوں میں دماغی نقصان کا سبب بن سکتا ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "EPI schedule is mainly for:",
-        options: ["Children", "Adults", "Old people", "Teachers"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "EPI شیڈول کا بنیادی مقصد بچوں کو مختلف بیماریوں سے بچانا ہے۔"
-    },
-    {
-        question: "Which of the following vaccines is given in two doses?",
-        options: ["Measles", "BCG", "TT", "Hepatitis B"],
-        correct: 0,
+        question: "Who invented the electric bulb?",
+        options: ["Newton", "Einstein", "Edison", "Galileo"],
+        correct: 2,
         difficulty: "medium",
-        explanation: "خسرہ (Measles) کی ویکسین دو ڈوز میں دی جاتی ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "Which vitamin deficiency increases measles complications?",
-        options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
-        correct: 0,
+        question: "The Earth is:",
+        options: ["Flat", "Square", "Spherical", "Triangular"],
+        correct: 2,
         difficulty: "medium",
-        explanation: "وٹامن اے کی کمی خسرہ کی پیچیدگیوں کو بڑھا سکتی ہے۔"
+        explanation: "This question is from Everyday Science category."
     },
     {
-        question: "حفاظتی ٹیکوں کے بارے میں عوام کو آگاہی کون دیتا ہے؟",
-        options: ["ویکسینیٹر", "استاد", "کسان", "فوجی"],
-        correct: 0,
-        difficulty: "easy",
-        explanation: "ویکسینیٹر اور صحت کا عملہ عوام کو حفاظتی ٹیکوں کی اہمیت سے آگاہ کرتا ہے۔"
+        question: "Human heart has ____ chambers.",
+        options: ["2", "3", "4", "5"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Green color in plants is due to:",
+        options: ["Protein", "Chlorophyll", "Calcium", "Hemoglobin"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Boiling point of water is:",
+        options: ["50°C", "75°C", "100°C", "150°C"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Which gas is essential for breathing?",
+        options: ["Nitrogen", "Oxygen", "Carbon dioxide", "Hydrogen"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Main function of kidneys is:",
+        options: ["Breathing", "Digestion", "Blood purification", "Pumping blood"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "The Moon is a:",
+        options: ["Star", "Planet", "Satellite", "Galaxy"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Largest gland in the human body is:",
+        options: ["Thyroid", "Liver", "Pancreas", "Kidney"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Light travels fastest in:",
+        options: ["Water", "Air", "Vacuum", "Glass"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Bones and teeth contain a large amount of:",
+        options: ["Iron", "Sodium", "Calcium", "Potassium"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Plants absorb which gas from the atmosphere?",
+        options: ["Oxygen", "Hydrogen", "Carbon dioxide", "Nitrogen"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
+    },
+    {
+        question: "Study of living organisms is called:",
+        options: ["Physics", "Chemistry", "Biology", "Geography"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "This question is from Everyday Science category."
     }
-
             ]
         };
 
@@ -2939,21 +3082,18 @@
         }
 
         function shuffleQuestions() {
-            state.questions = shuffleArray(state.questions).map(q => ({
-                ...q,
-                options: shuffleArray(q.options.map((option, index) => ({
-                    text: option,
-                    originalIndex: index
-                }))),
-                correct: q.correct
-            }));
-            
-            state.questions.forEach(question => {
-                const correctOptionText = state.questions.find(q => 
-                    q === question
-                ).options.find(opt => opt.originalIndex === question.correct).text;
+            state.questions = shuffleArray(state.questions).map(q => {
+                const plainOptions = q.options.map(opt => (opt && typeof opt === 'object') ? (opt.text || opt) : opt);
+                const correctText = plainOptions[q.correct];
                 
-                question.correct = question.options.findIndex(opt => opt.text === correctOptionText);
+                const shuffledPlainOptions = shuffleArray([...plainOptions]);
+                const newCorrectIndex = shuffledPlainOptions.indexOf(correctText);
+                
+                return {
+                    ...q,
+                    options: shuffledPlainOptions,
+                    correct: newCorrectIndex
+                };
             });
             
             state.userAnswers = new Array(state.questions.length).fill(null);
@@ -3115,6 +3255,7 @@
 
         function updateQuestionPalette() {
             const buttons = elements.questionPalette.querySelectorAll('.palette-btn');
+            let currentBtn = null;
             
             buttons.forEach((btn, index) => {
                 btn.classList.remove('unanswered', 'answered', 'current');
@@ -3128,6 +3269,7 @@
                 
                 if (index === state.currentQuestion) {
                     btn.classList.add('current');
+                    currentBtn = btn;
                 } else if (state.userAnswers[index] !== null) {
                     btn.classList.add('answered');
                 } else {
@@ -3152,6 +3294,16 @@
                 
                 btn.style.display = shouldShow ? 'block' : 'none';
             });
+
+            // Scroll the active button into view
+            if (currentBtn && elements.questionPalette) {
+                const container = elements.questionPalette;
+                const scrollLeft = currentBtn.offsetLeft - (container.clientWidth / 2) + (currentBtn.clientWidth / 2);
+                container.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         function calculateResults() {
@@ -3350,11 +3502,20 @@
         }
 
         // Event Listeners
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        if (togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const type = elements.passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                elements.passwordInput.setAttribute('type', type);
+                togglePasswordBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+        }
+
         elements.accessForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const password = elements.passwordInput.value.trim();
             
-            if (password === 'vaccinatortestbymk') {
+            if (password === 'epitestbymk') {
                 shuffleQuestions();
                 createQuestionPalette();
                 displayQuestion();
